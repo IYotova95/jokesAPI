@@ -1,39 +1,31 @@
 package com.spartaglobal.jokesAPI;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import com.spartaglobal.jokesAPI.HTTPServices.JokesHTTPService;
-import com.spartaglobal.jokesAPI.parsingJSON.JokesDeserialiser;
+import com.spartaglobal.jokesAPI.parsingJSON.JokesService;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AppTest 
 {
-    private static JokesDeserialiser jokes;
-    private static JokesHTTPService jokesHTTPService = new JokesHTTPService();
+    private static JokesService jokesService;
 
     @BeforeClass
     public static void setup(){
-      jokesHTTPService.executeGetRequest("Programming","religious");
-      jokes = new JokesDeserialiser(jokesHTTPService.getJokesJSONString());
+        jokesService = new JokesService();
+        jokesService.executeJokeCall("Programming","religious");
+
     }
 
-    @Test
-    public void theJokeTest(){
-       // System.out.println(jokesHTTPService.getJokesJSONString());
-       // System.out.println(jokes.jokesMap.getCategory());
-    }
+
 
     @Test
     public void testCategory(){
-        Assert.assertEquals("Programming",jokes.jokesMap.getCategory());
+        Assert.assertEquals("Programming",jokesService.getParsedJASONResponse().getCategory());
     }
 
     @Test
     public void testIfReligious(){
-        Assert.assertFalse(jokes.jokesMap.isReligious());
+        Assert.assertFalse(jokesService.getParsedJASONResponse().isReligious());
     }
 
 }
